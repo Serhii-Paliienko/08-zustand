@@ -3,42 +3,31 @@ import {
   dehydrate,
   HydrationBoundary,
 } from "@tanstack/react-query";
-import { fetchNoteById, OG_IMAGE, SITE_URL } from "@/lib/api";
+import { fetchNoteById, OG_IMAGE } from "@/lib/api";
 import NoteDetailsClient from "@/app/notes/[id]/NoteDetails.client";
-import { PageProps } from "@/types/note";
 import { Metadata } from "next";
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
-  try {
-    const note = await fetchNoteById(params.id);
-    const title = `${note.title} | NoteHub`;
-    const description =
-      note.content?.slice(0, 140).replace(/\s+/g, " ") || "Note details";
-    const url = `${SITE_URL}/notes/${params.id}`;
-
-    return {
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const note = await fetchNoteById(params.id);
+  const title = `${note.title} — Note details`;
+  const description =
+    (note.content || "").replace(/\s+/g, " ").slice(0, 160) ||
+    `Read the note “${note.title}” on NoteHub.`;
+  return {
+    title,
+    description,
+    openGraph: {
+      type: "article",
       title,
       description,
-      openGraph: {
-        title,
-        description,
-        url,
-        images: [{ url: OG_IMAGE }],
-      },
-    };
-  } catch {
-    const title = "Note not found | NoteHub";
-    const description = "Requested note cannot be found.";
-    const url = `${SITE_URL}/notes/${params.id}`;
-
-    return {
-      title,
-      description,
-      openGraph: { title, description, url, images: [{ url: OG_IMAGE }] },
-    };
-  }
+      url: `/notes/${params.id}`,
+      images: [{ url: OG_IMAGE }],
+    },
+  };
 }
 
 export default async function NoteDetailsPage({

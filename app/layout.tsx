@@ -15,7 +15,10 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "NoteHub: Fast Notes App with Instant Search & Tags",
+  title: {
+    default: "NoteHub: Fast Notes App with Instant Search & Tags",
+    template: "%s | NoteHub",
+  },
   description:
     "Capture ideas in seconds with NoteHub — a fast, lightweight notes app with instant full-text search, tag filters, and a clean, distraction-free interface.",
   keywords: [

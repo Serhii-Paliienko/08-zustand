@@ -3,32 +3,23 @@ import {
   dehydrate,
   HydrationBoundary,
 } from "@tanstack/react-query";
-import { fetchNotes, OG_IMAGE, SITE_URL } from "@/lib/api";
+import { fetchNotes, OG_IMAGE } from "@/lib/api";
 import NotesClient from "@/app/notes/filter/[...slug]/Notes.client";
-import { NoteTag, TAGS } from "@/types/note";
+import { NoteTag } from "@/types/note";
 import { Metadata } from "next";
-
-type PageProps = {
-  params: { slug?: string[] };
-};
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: {
+  params: { slug?: string[] };
+}): Promise<Metadata> {
   const rawTag = params.slug?.[0] ?? "All";
-  const selectedTag = decodeURIComponent(rawTag) as "All" | NoteTag;
-  const valid = (TAGS as readonly string[]).includes(selectedTag);
-
-  const title = valid
-    ? `Notes – ${selectedTag} | NoteHub`
-    : "Notes – All | NoteHub";
-  const description = valid
-    ? `Filtered notes by tag: ${selectedTag}.`
-    : "All notes in NoteHub.";
-
-  const url = `${SITE_URL}/notes/filter/${encodeURIComponent(
-    valid ? selectedTag : "All"
-  )}`;
+  const selectedTag = decodeURIComponent(rawTag);
+  const title = selectedTag === "All" ? "All notes" : `Notes — ${selectedTag}`;
+  const description =
+    selectedTag === "All"
+      ? "Browse all notes on NoteHub with fast search and filters."
+      : `Browse "${selectedTag}" notes on NoteHub with fast search and filters.`;
 
   return {
     title,
@@ -36,7 +27,7 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      url,
+      url: `/notes/filter/${encodeURIComponent(selectedTag)}`,
       images: [{ url: OG_IMAGE }],
     },
   };
