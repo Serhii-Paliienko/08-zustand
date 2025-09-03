@@ -24,7 +24,7 @@
 .menuList {
   position: absolute;
   top: calc(100% + 6px);
-  right: 0;
+  left: 0;
   background-color: #333;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -32,7 +32,7 @@
   padding: 6px 0;
   margin: 0;
   list-style: none;
-  min-width: 120px;
+  min-width: 180px;
   z-index: 1000;
 }
 

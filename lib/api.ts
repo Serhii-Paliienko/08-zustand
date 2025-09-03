@@ -59,3 +59,8 @@ export async function fetchNoteById(id: string): Promise<Note> {
   }
   return res.data;
 }
+
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com";
+export const OG_IMAGE =
+  "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg";

@@ -3,9 +3,44 @@ import {
   dehydrate,
   HydrationBoundary,
 } from "@tanstack/react-query";
-import { fetchNotes } from "@/lib/api";
+import { fetchNotes, OG_IMAGE, SITE_URL } from "@/lib/api";
 import NotesClient from "@/app/notes/filter/[...slug]/Notes.client";
-import { NoteTag } from "@/types/note";
+import { NoteTag, TAGS } from "@/types/note";
+import { Metadata } from "next";
+
+type PageProps = {
+  params: { slug?: string[] };
+};
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const rawTag = params.slug?.[0] ?? "All";
+  const selectedTag = decodeURIComponent(rawTag) as "All" | NoteTag;
+  const valid = (TAGS as readonly string[]).includes(selectedTag);
+
+  const title = valid
+    ? `Notes – ${selectedTag} | NoteHub`
+    : "Notes – All | NoteHub";
+  const description = valid
+    ? `Filtered notes by tag: ${selectedTag}.`
+    : "All notes in NoteHub.";
+
+  const url = `${SITE_URL}/notes/filter/${encodeURIComponent(
+    valid ? selectedTag : "All"
+  )}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url,
+      images: [{ url: OG_IMAGE }],
+    },
+  };
+}
 
 export default async function NotesFilteredPage({
   params,
@@ -32,10 +67,8 @@ export default async function NotesFilteredPage({
       }),
   });
 
-  const state = dehydrate(qc);
-
   return (
-    <HydrationBoundary state={state}>
+    <HydrationBoundary state={dehydrate(qc)}>
       <NotesClient
         initialPage={page}
         perPage={perPage}

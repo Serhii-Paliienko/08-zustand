@@ -17,3 +17,7 @@ export const TAGS = [
   "Meeting",
   "Shopping",
 ] as const;
+
+export type PageProps = {
+  params: { slug?: string[] };
+};
