@@ -1,3 +1,5 @@
+"use client";
+
 import { TAGS } from "@/types/note";
 import css from "./SidebarNotes.module.css";
 import Link from "next/link";
@@ -5,7 +7,6 @@ import { usePathname } from "next/navigation";
 
 const SidebarNotes = () => {
   const pathName = usePathname();
-  if (pathName === "/notes/filter/All") return null;
   const otherTags = TAGS.filter((tag) => tag !== "All");
   const isActive = (href: string) => pathName === href;
 
