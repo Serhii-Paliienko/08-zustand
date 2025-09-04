@@ -44,17 +44,16 @@ export default async function NotesFilteredPage({
   const perPage = 12;
   const search = "";
 
-  const rawTag = slug?.[0] ?? "All";
+  const rawTag = (slug?.[0] ?? "All") as string;
   const selectedTag = decodeURIComponent(rawTag) as "All" | NoteTag;
+  const q = { page, perPage, search, tag: selectedTag };
 
   const qc = new QueryClient();
   await qc.prefetchQuery({
-    queryKey: ["notes", { page, perPage, search, tag: selectedTag }],
+    queryKey: ["notes", q],
     queryFn: () =>
       fetchNotes({
-        page,
-        perPage,
-        search,
+        ...q,
         tag: selectedTag === "All" ? undefined : selectedTag,
       }),
   });

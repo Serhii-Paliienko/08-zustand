@@ -44,6 +44,7 @@ const TagsMenu = () => {
           {TAGS.map((tag) => (
             <li key={tag} className={css.menuItem} role="none">
               <Link
+                prefetch={false}
                 role="menuitem"
                 href={`/notes/filter/${encodeURIComponent(tag)}`}
                 className={css.menuLink}

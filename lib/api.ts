@@ -61,6 +61,7 @@ export async function fetchNoteById(id: string): Promise<Note> {
 }
 
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com";
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  "https://08-zustand-eight-lovat.vercel.app/";
 export const OG_IMAGE =
   "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg";

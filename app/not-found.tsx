@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "404 — Page not found",
   description:
     "The page you’re looking for does not exist. Explore NoteHub to find notes by tags or keywords.",
+  robots: { index: false, follow: false },
   openGraph: {
     title: "404 — Page not found",
     description:

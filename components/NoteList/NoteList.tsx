@@ -16,6 +16,7 @@ const NoteList = ({ notes }: NoteListProps) => {
     mutationFn: (id: string) => deleteNote(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["notes"] }),
   });
+
   if (!notes.length) return null;
 
   return (

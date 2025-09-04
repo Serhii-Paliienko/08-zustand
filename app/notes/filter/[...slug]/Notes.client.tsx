@@ -36,26 +36,23 @@ export default function NotesClient({
 
   useEffect(() => setPage(1), [debounceSearch, selectedTag]);
 
-  const queryKey = useMemo(
-    () => [
-      "notes",
-      { page, perPage, search: debounceSearch, tag: selectedTag },
-    ],
+  const q = useMemo(
+    () => ({ page, perPage, search: debounceSearch, tag: selectedTag }),
     [page, perPage, debounceSearch, selectedTag]
   );
 
   const { data, isPending, error } = useQuery<FetchNotesResponse>({
-    queryKey,
+    queryKey: ["notes", q],
     queryFn: () =>
       fetchNotes({
-        page,
-        perPage,
-        search: debounceSearch,
-        tag: selectedTag === "All" ? undefined : selectedTag,
+        ...q,
+        tag: q.tag === "All" ? undefined : q.tag,
       }),
     placeholderData: keepPreviousData,
-    staleTime: 5_000,
+    staleTime: 30_000,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   return (
@@ -73,10 +70,6 @@ export default function NotesClient({
           Create note +
         </Link>
       </header>
-
-      {isPending && <Loader />}
-      {error && <ErrorBox error={error} />}
-      {data && data.notes.length > 0 && <NoteList notes={data.notes} />}
 
       {isPending && <Loader />}
       {error && <ErrorBox error={error} />}
