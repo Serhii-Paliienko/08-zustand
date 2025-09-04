@@ -32,7 +32,11 @@ const NoteList = ({ notes }: NoteListProps) => {
             </p>
             <div className={css.footer}>
               <span className={css.tag}>{note.tag}</span>
-              <Link href={`/notes/${note.id}`} className={css.link}>
+              <Link
+                prefetch={false}
+                href={`/notes/${note.id}`}
+                className={css.link}
+              >
                 View details
               </Link>
               <button
