@@ -3,7 +3,7 @@ import {
   dehydrate,
   HydrationBoundary,
 } from "@tanstack/react-query";
-import { fetchNoteById, OG_IMAGE } from "@/lib/api";
+import { fetchNoteById, OG_IMAGE, SITE_URL } from "@/lib/api";
 import NoteDetailsClient from "@/app/notes/[id]/NoteDetails.client";
 import { Metadata } from "next";
 
@@ -15,17 +15,19 @@ export async function generateMetadata({
   const { id } = await params;
   const note = await fetchNoteById(id);
   const title = `${note.title} — Note details`;
+  const url = `${SITE_URL}/notes/${id}`;
   const description =
     (note.content || "").replace(/\s+/g, " ").slice(0, 160) ||
     `Read the note “${note.title}” on NoteHub.`;
   return {
     title,
     description,
+    alternates: { canonical: url },
     openGraph: {
       type: "article",
       title,
       description,
-      url: `/notes/${id}`,
+      url,
       images: [{ url: OG_IMAGE }],
     },
   };

@@ -24,6 +24,9 @@ const Pagination = ({
         activeClassName={css.active}
         nextLabel="&raquo;"
         previousLabel="&laquo;"
+        breakLabel="…"
+        previousAriaLabel="Previous page"
+        nextAriaLabel="Next page"
       />
     </div>
   );

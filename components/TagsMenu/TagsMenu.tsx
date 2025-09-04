@@ -40,12 +40,11 @@ const TagsMenu = () => {
       </button>
 
       {open && (
-        <ul role="menu" className={css.menuList}>
+        <ul className={css.menuList}>
           {TAGS.map((tag) => (
             <li key={tag} className={css.menuItem} role="none">
               <Link
                 prefetch={false}
-                role="menuitem"
                 href={`/notes/filter/${encodeURIComponent(tag)}`}
                 className={css.menuLink}
               >

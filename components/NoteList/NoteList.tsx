@@ -15,6 +15,7 @@ const NoteList = ({ notes }: NoteListProps) => {
   const { mutate, isPending, variables } = useMutation<Note, Error, string>({
     mutationFn: (id: string) => deleteNote(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["notes"] }),
+    onError: (err) => alert(err.message || "Failed to delete"),
   });
 
   if (!notes.length) return null;
@@ -37,7 +38,11 @@ const NoteList = ({ notes }: NoteListProps) => {
               <button
                 className={css.button}
                 type="button"
-                onClick={() => mutate(note.id)}
+                onClick={() => {
+                  if (confirm(`Delete "${note.title}"?`)) {
+                    mutate(note.id);
+                  }
+                }}
                 disabled={isDeleting}
               >
                 {isDeleting ? "Deleting..." : "Delete"}

@@ -37,6 +37,12 @@ const Modal = ({ onClose, children }: ModalProps) => {
     downOnBackdropRef.current = false;
   };
 
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    dialogRef.current?.focus();
+  }, []);
+
   return createPortal(
     <div
       className={css.backdrop}
@@ -46,7 +52,9 @@ const Modal = ({ onClose, children }: ModalProps) => {
       onMouseUp={handleBackdropMouseUp}
     >
       <div
+        ref={dialogRef}
         className={css.modal}
+        tabIndex={-1}
         onMouseDown={(e) => e.stopPropagation()}
         onMouseUp={(e) => e.stopPropagation()}
       >

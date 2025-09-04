@@ -20,6 +20,8 @@ const SearchBox = ({ value, onChange }: SearchBoxProps) => {
       value={value}
       onChange={handleChange}
       aria-label="Search notes"
+      autoComplete="off"
+      enterKeyHint="search"
     />
   );
 };

@@ -3,7 +3,7 @@ import {
   dehydrate,
   HydrationBoundary,
 } from "@tanstack/react-query";
-import { fetchNotes, OG_IMAGE } from "@/lib/api";
+import { fetchNotes, OG_IMAGE, SITE_URL } from "@/lib/api";
 import NotesClient from "@/app/notes/filter/[...slug]/Notes.client";
 import { NoteTag } from "@/types/note";
 import { Metadata } from "next";
@@ -17,20 +17,16 @@ export async function generateMetadata({
   const rawTag = slug?.[0] ?? "All";
   const selectedTag = decodeURIComponent(rawTag);
   const title = selectedTag === "All" ? "All notes" : `Notes — ${selectedTag}`;
+  const url = `${SITE_URL}/notes/filter/${encodeURIComponent(selectedTag)}`;
   const description =
     selectedTag === "All"
       ? "Browse all notes on NoteHub with fast search and filters."
       : `Browse "${selectedTag}" notes on NoteHub with fast search and filters.`;
-
   return {
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      url: `/notes/filter/${encodeURIComponent(selectedTag)}`,
-      images: [{ url: OG_IMAGE }],
-    },
+    alternates: { canonical: url },
+    openGraph: { title, description, url, images: [{ url: OG_IMAGE }] },
   };
 }
 

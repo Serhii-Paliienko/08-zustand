@@ -8,7 +8,7 @@ interface FilterLayoutProps {
 const FilterLayout = ({ children, sidebar }: FilterLayoutProps) => {
   return (
     <div className={css.container}>
-      <aside className={css.sidebar}>{sidebar}</aside>
+      {sidebar ? <aside className={css.sidebar}>{sidebar}</aside> : null}
       <section className={css.notesWrapper}>{children}</section>
     </div>
   );
