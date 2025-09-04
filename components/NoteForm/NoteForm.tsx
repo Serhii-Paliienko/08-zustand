@@ -9,7 +9,7 @@ import { useNoteDraftStore, initialDraft } from "@/lib/store/noteStore";
 import css from "./NoteForm.module.css";
 
 interface NoteFormProps {
-  onCancel: () => void;
+  onCancel?: () => void;
 }
 
 const TAGS: NoteTag[] = ["Todo", "Work", "Personal", "Meeting", "Shopping"];
@@ -18,7 +18,6 @@ export default function NoteForm({ onCancel }: NoteFormProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { draft, setDraft, clearDraft } = useNoteDraftStore();
-
   const [form, setForm] = useState<CreateNoteInput>(draft ?? initialDraft);
 
   useEffect(() => {

@@ -11,9 +11,10 @@ import { Metadata } from "next";
 export async function generateMetadata({
   params,
 }: {
-  params: { slug?: string[] };
+  params: Promise<{ slug?: string[] }>;
 }): Promise<Metadata> {
-  const rawTag = params.slug?.[0] ?? "All";
+  const { slug } = await params;
+  const rawTag = slug?.[0] ?? "All";
   const selectedTag = decodeURIComponent(rawTag);
   const title = selectedTag === "All" ? "All notes" : `Notes — ${selectedTag}`;
   const description =

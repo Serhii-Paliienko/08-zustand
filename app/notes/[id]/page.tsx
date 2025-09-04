@@ -10,9 +10,10 @@ import { Metadata } from "next";
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const note = await fetchNoteById(params.id);
+  const { id } = await params;
+  const note = await fetchNoteById(id);
   const title = `${note.title} — Note details`;
   const description =
     (note.content || "").replace(/\s+/g, " ").slice(0, 160) ||
@@ -24,7 +25,7 @@ export async function generateMetadata({
       type: "article",
       title,
       description,
-      url: `/notes/${params.id}`,
+      url: `/notes/${id}`,
       images: [{ url: OG_IMAGE }],
     },
   };
